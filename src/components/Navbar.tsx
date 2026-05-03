@@ -17,9 +17,10 @@ const DEFAULT_PROMOS = [
 interface NavbarProps {
   promos?: string[];
   logo?: string;
+  announcementBg?: string;
 }
 
-export default function Navbar({ promos = DEFAULT_PROMOS, logo }: NavbarProps) {
+export default function Navbar({ promos = DEFAULT_PROMOS, logo, announcementBg }: NavbarProps) {
   const pathname = usePathname();
   const { totalItems, toggleCart } = useCartStore();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -76,7 +77,10 @@ export default function Navbar({ promos = DEFAULT_PROMOS, logo }: NavbarProps) {
   return (
     <>
       {/* ── Top Announcement Bar (From Customizer) ─────────────── */}
-      <div className="bg-ccg-black text-white py-2.5 px-4 text-xs flex justify-between items-center z-50 relative border-b border-white/10">
+      <div 
+        className="bg-ccg-black text-white py-2.5 px-4 text-xs flex justify-between items-center z-50 relative border-b border-white/10"
+        style={{ backgroundColor: announcementBg || undefined }}
+      >
         <div className="hidden md:flex gap-6 text-white/70">
           <Link href="/tracking" className="hover:text-white transition-colors">Order Tracking</Link>
           <Link href="/about" className="hover:text-white transition-colors">About Us</Link>

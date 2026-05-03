@@ -37,6 +37,8 @@ export const GET_GLOBAL_SETTINGS = gql`
       promo1
       promo2
       promo3
+      accentColor
+      announcementBg
       heroSlides {
         image { node { sourceUrl altText } }
         tag

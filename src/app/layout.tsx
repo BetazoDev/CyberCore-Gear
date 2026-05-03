@@ -38,6 +38,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         promo1?: string;
         promo2?: string;
         promo3?: string;
+        accentColor?: string;
+        announcementBg?: string;
         heroSlides?: any[];
       };
     }
@@ -68,7 +70,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html lang="es-MX" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-white text-ccg-text">
         <ApolloClientProvider>
-          <Navbar promos={promos?.length ? promos : undefined} logo={siteLogo} />
+          <Navbar 
+            promos={promos?.length ? promos : undefined} 
+            logo={siteLogo} 
+            announcementBg={data?.themeOptions?.announcementBg}
+          />
           <main className="flex-1">{children}</main>
           <Footer />
           <CartDrawer />

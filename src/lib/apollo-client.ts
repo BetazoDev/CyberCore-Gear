@@ -7,25 +7,25 @@ import { headers } from "next/headers";
 const WP_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL!;
 
 export const { getClient, query, PreloadQuery } = registerApolloClient(async () => {
-  let revalidate = 60; // Reducimos el default a 1 minuto
+  let revalidate = 15; // Reducimos el default a 15 segundos
   let isPreview = false;
   let changesetUuid = "";
-  
+
   try {
     const headersList = await headers();
     const referer = headersList.get("referer") || "";
     const cookie = headersList.get("cookie") || "";
     const mwChangeset = headersList.get("x-customize-changeset");
     const mwIsPreview = headersList.get("x-is-preview");
-    
+
     // Detectar modo preview (Middleware, Customizer o logueado en WP)
-    if (mwIsPreview === 'true' || 
-        referer.includes("wp-admin/customize.php") || 
-        referer.includes("wp_customize=on") || 
-        cookie.includes("wordpress_logged_in")) {
+    if (mwIsPreview === 'true' ||
+      referer.includes("wp-admin/customize.php") ||
+      referer.includes("wp_customize=on") ||
+      cookie.includes("wordpress_logged_in")) {
       revalidate = 0;
       isPreview = true;
-      
+
       // Prioridad al changeset detectado por el middleware
       if (mwChangeset) {
         changesetUuid = mwChangeset;
@@ -34,7 +34,7 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(async () 
         const match = referer.match(/customize_changeset_uuid=([a-z0-9-]+)/i);
         if (match) changesetUuid = match[1];
       }
-      
+
       console.log("🛠️ Modo Preview detectado. Changeset:", changesetUuid || "N/A");
     }
   } catch (e) {
@@ -54,10 +54,15 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(async () 
     cache: new InMemoryCache(),
     link: new HttpLink({
       uri,
-      headers: isPreview ? {
-        "X-CyberCore-Preview": "true",
-      } : {},
-      fetchOptions: { 
+      headers: {
+        ...(isPreview ? {
+          "X-CyberCore-Preview": "true",
+          "X-Customize-Changeset": changesetUuid,
+        } : {}),
+        // Forward cookies for auth
+        Cookie: (await headers()).get("cookie") || "",
+      },
+      fetchOptions: {
         next: { revalidate },
         cache: isPreview ? 'no-store' : 'force-cache'
       },
