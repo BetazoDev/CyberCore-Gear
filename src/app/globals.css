@@ -1,26 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Russo+One&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ─── CCG v2 Design Tokens — White · Black · Neon Purple ───── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Core */
+  --color-ccg-white:        #FFFFFF;
+  --color-ccg-surface:      #F8F8FC;
+  --color-ccg-surface-2:    #F0EFF8;
+  --color-ccg-border:       #E4E2F0;
+  --color-ccg-black:        #0A0A0A;
+  --color-ccg-charcoal:     #111119;
+  --color-ccg-text:         #111111;
+  --color-ccg-muted:        #6B7280;
+
+  /* Neon Purple System */
+  --color-ccg-purple:       #7C3AED;
+  --color-ccg-purple-neon:  #A855F7;
+  --color-ccg-purple-light: #EDE9FE;
+  --color-ccg-purple-glow:  #C084FC;
+  --color-ccg-purple-dark:  #5B21B6;
+
+  /* Fonts */
+  --font-russo:  'Russo One', system-ui, sans-serif;
+  --font-chakra: 'Chakra Petch', system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* ─── Base ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FFFFFF;
+  color: #111111;
+  font-family: 'Chakra Petch', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100dvh;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Russo One', system-ui, sans-serif;
+}
+
+/* ─── Focus ────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid #7C3AED;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #F8F8FC; }
+::-webkit-scrollbar-thumb { background: #C084FC; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #7C3AED; }
+
+/* ─── Selection ────────────────────────────────────────────── */
+::selection { background: #7C3AED30; color: #111111; }
+
+/* ─── Purple neon glow utility ─────────────────────────────── */
+.purple-glow {
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.35), 0 0 60px rgba(124, 58, 237, 0.15);
+}
+.purple-glow-text {
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.6);
+}
+
+/* ─── Reduced Motion ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

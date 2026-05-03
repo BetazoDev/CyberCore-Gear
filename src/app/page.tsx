@@ -1,65 +1,98 @@
-import Image from "next/image";
+import { Suspense } from "react";
+import type { Metadata } from "next";
+import HeroSection from "@/components/home/HeroSection";
+import BrandBar from "@/components/home/BrandBar";
+import FeaturedCategories from "@/components/home/FeaturedCategories";
+import PromoBanner from "@/components/home/PromoBanner";
+import NewProductsSection from "@/components/home/NewProductsSection";
+import StarProducts from "@/components/home/StarProducts";
+import QuoteSection from "@/components/home/QuoteSection";
+import SkeletonCard from "@/components/SkeletonCard";
 
-export default function Home() {
+export const revalidate = 0;
+
+
+export const metadata: Metadata = {
+  title: "CyberCore Gear — Premium Mechanical Keyboards",
+  description:
+    "Descubre nuestra colección de teclados mecánicos personalizados. Alta gama, switches premium, y diseño sin compromiso.",
+};
+
+export default async function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <>
+      {/* 1. Hero — ACF powered */}
+      <Suspense fallback={<div className="min-h-[88vh] bg-ccg-charcoal animate-pulse" />}>
+        <HeroSection />
+      </Suspense>
+
+      {/* 2. Brand Logo Bar */}
+      <BrandBar />
+
+      {/* 3. Featured Categories */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between mb-8">
+            <h2 className="font-russo text-3xl md:text-4xl text-ccg-black">
+              Shop by <span className="text-ccg-purple">Category</span>
+            </h2>
+          </div>
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="aspect-square bg-ccg-surface rounded-2xl animate-pulse" />
+                ))}
+              </div>
+            }
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            <FeaturedCategories />
+          </Suspense>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* 4. Promo Banners (dark + split) */}
+      <Suspense fallback={<div className="h-[400px] bg-ccg-charcoal animate-pulse" />}>
+        <PromoBanner />
+      </Suspense>
+
+      {/* 5. Most sold this week */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                {[...Array(8)].map((_, i) => <SkeletonCard key={i} />)}
+              </div>
+            }
+          >
+            <NewProductsSection />
+          </Suspense>
+        </div>
+      </section>
+
+      {/* 6. Best Sellers */}
+      <section className="py-16 bg-ccg-surface border-y border-ccg-border">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-end justify-between mb-8">
+            <h2 className="font-russo text-3xl md:text-4xl text-ccg-black">
+              Best <span className="text-ccg-purple">Sellers</span>
+            </h2>
+          </div>
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                {[...Array(4)].map((_, i) => <SkeletonCard key={i} />)}
+              </div>
+            }
+          >
+            <StarProducts />
+          </Suspense>
+        </div>
+      </section>
+
+      {/* 7. Stats + Quote */}
+      <QuoteSection />
+    </>
   );
 }
