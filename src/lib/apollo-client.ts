@@ -6,13 +6,13 @@ import { headers } from "next/headers";
 
 const WP_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL!;
 
-export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
+export const { getClient, query, PreloadQuery } = registerApolloClient(async () => {
   let revalidate = 60; // Reducimos el default a 1 minuto
   let isPreview = false;
   let changesetUuid = "";
   
   try {
-    const headersList = headers();
+    const headersList = await headers();
     const referer = headersList.get("referer") || "";
     const cookie = headersList.get("cookie") || "";
     
