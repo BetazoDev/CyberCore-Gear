@@ -9,7 +9,7 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
     cache: new InMemoryCache(),
     link: new HttpLink({
       uri: WP_API_URL,
-      fetchOptions: { cache: "no-store" },
+      fetchOptions: { next: { revalidate: 60 } },
     }),
   });
 });
