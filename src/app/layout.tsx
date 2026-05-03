@@ -27,11 +27,20 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  let promos = undefined;
-  let siteLogo = undefined;
+  let promos: string[] | undefined = undefined;
+  let siteLogo: string | undefined = undefined;
 
   try {
-    const { data } = await getClient().query({ query: GET_GLOBAL_SETTINGS }) as { data: any };
+    const { data } = await getClient().query<{
+      siteLogo?: string;
+      themeOptions?: {
+        promo1?: string;
+        promo2?: string;
+        promo3?: string;
+      };
+    }>({ 
+      query: GET_GLOBAL_SETTINGS 
+    });
     
     // Extract promos
     if (data?.themeOptions) {
