@@ -18,20 +18,27 @@ interface AcfData {
 }
 
 export default async function HeroSection() {
-  let acf: AcfData = {};
+  let slides: HeroSlide[] = [];
 
   try {
     const { data } = await getClient().query({ query: GET_HOMEPAGE_DATA });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    acf = (data as any)?.nodeByUri?.configuracionInicio ?? {};
+    const acf = (data as any)?.nodeByUri?.configuracionInicio;
+    const themeOptions = (data as any)?.themeOptions;
+
+    // 1. Try Customizer Slides first
+    if (themeOptions?.heroSlides && themeOptions.heroSlides.length > 0) {
+      slides = themeOptions.heroSlides;
+    } 
+    // 2. Fallback to ACF Page Slides
+    else if (acf) {
+      slides = [acf.heroSlide1, acf.heroSlide2, acf.heroSlide3]
+        .filter((slide): slide is HeroSlide => !!(slide && (slide.image?.node?.sourceUrl || slide.heading)));
+    }
   } catch (e) {
-    console.error("HeroSection ACF fetch error:", e);
+    console.error("HeroSection fetch error:", e);
   }
 
-  // Combine the fixed slides into an array (ignoring empty ones)
-  let slides: HeroSlide[] = [acf.heroSlide1, acf.heroSlide2, acf.heroSlide3]
-    .filter((slide): slide is HeroSlide => !!(slide && (slide.image?.node?.sourceUrl || slide.heading)));
-  
+  // 3. Absolute fallback for design safety
   if (!slides || slides.length === 0) {
     slides = [
       {

@@ -12,6 +12,16 @@ export const GET_HOMEPAGE_DATA = gql`
         }
       }
     }
+    themeOptions {
+      heroSlides {
+        image { node { sourceUrl altText } }
+        tag
+        heading
+        subheading
+        buttonText
+        buttonLink
+      }
+    }
   }
 `;
 
@@ -27,6 +37,14 @@ export const GET_GLOBAL_SETTINGS = gql`
       promo1
       promo2
       promo3
+      heroSlides {
+        image { node { sourceUrl altText } }
+        tag
+        heading
+        subheading
+        buttonText
+        buttonLink
+      }
     }
   }
 `;

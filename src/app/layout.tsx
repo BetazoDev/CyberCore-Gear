@@ -38,6 +38,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         promo1?: string;
         promo2?: string;
         promo3?: string;
+        heroSlides?: any[];
       };
     }
 
