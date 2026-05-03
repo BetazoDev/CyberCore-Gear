@@ -61,7 +61,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
 
   return (
-    <html lang="es-MX" className="h-full antialiased">
+    <html lang="es-MX" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col bg-white text-ccg-text">
         <ApolloClientProvider>
           <Navbar promos={promos?.length ? promos : undefined} logo={siteLogo} />
