@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     description: "Teclados mecánicos personalizados de alta gama.",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   robots: { index: true, follow: true },
 };
 
@@ -31,17 +32,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   let siteLogo: string | undefined = undefined;
 
   try {
-    const { data } = await getClient().query<{
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await getClient().query({ query: GET_GLOBAL_SETTINGS }) as any;
+    const data = result.data as {
       siteLogo?: string;
       themeOptions?: {
         promo1?: string;
         promo2?: string;
         promo3?: string;
       };
-    }>({ 
-      query: GET_GLOBAL_SETTINGS 
-    });
-    
+    };
+
     // Extract promos
     if (data?.themeOptions) {
       promos = [
