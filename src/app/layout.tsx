@@ -32,16 +32,18 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   let siteLogo: string | undefined = undefined;
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = await getClient().query({ query: GET_GLOBAL_SETTINGS }) as any;
-    const data = result.data as {
+    interface GlobalSettingsData {
       siteLogo?: string;
       themeOptions?: {
         promo1?: string;
         promo2?: string;
         promo3?: string;
       };
-    };
+    }
+
+    const { data } = await getClient().query<GlobalSettingsData>({
+      query: GET_GLOBAL_SETTINGS,
+    });
 
     // Extract promos
     if (data?.themeOptions) {
@@ -52,7 +54,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       ].filter(Boolean) as string[];
     }
 
-    // Extract logo (using a custom field we will add in functions.php)
+    // Extract logo
     if (data?.siteLogo) {
       siteLogo = data.siteLogo;
     }
