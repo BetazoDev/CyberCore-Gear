@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   let siteLogo = undefined;
 
   try {
-    const { data } = await getClient().query({ query: GET_GLOBAL_SETTINGS });
+    const { data } = await getClient().query({ query: GET_GLOBAL_SETTINGS }) as { data: any };
     
     // Extract promos
     if (data?.themeOptions) {
