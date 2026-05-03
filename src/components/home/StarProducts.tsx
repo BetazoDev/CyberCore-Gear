@@ -20,7 +20,8 @@ interface Product {
 export default async function StarProducts() {
   let products: Product[] = [];
   try {
-    const { data } = await getClient().query({ query: GET_PRODUCTS, variables: { first: 4 } });
+    const client = await getClient();
+    const { data } = await client.query({ query: GET_PRODUCTS, variables: { first: 4 } });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     products = (data as any)?.products?.nodes ?? [];
   } catch (e) {

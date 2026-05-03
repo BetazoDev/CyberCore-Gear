@@ -42,7 +42,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       };
     }
 
-    const { data } = await getClient().query<GlobalSettingsData>({
+    const client = await getClient();
+    const { data } = await client.query<GlobalSettingsData>({
       query: GET_GLOBAL_SETTINGS,
     });
 

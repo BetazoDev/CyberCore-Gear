@@ -29,15 +29,16 @@ export default async function CatalogPage({ searchParams }: PageProps) {
   let hasNextPage = false;
 
   try {
+    const client = await getClient();
     const [productsRes, catsRes] = await Promise.all([
-      getClient().query({
+      client.query({
         query: GET_PRODUCTS,
         variables: {
           first: 12,
           category: category || undefined,
         },
       }),
-      getClient().query({ query: GET_CATEGORIES }),
+      client.query({ query: GET_CATEGORIES }),
     ]);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const pData = productsRes.data as any;

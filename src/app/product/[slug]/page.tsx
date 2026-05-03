@@ -14,7 +14,8 @@ interface PageProps {
 
 export async function generateStaticParams() {
   try {
-    const { data } = await getClient().query({ query: GET_ALL_PRODUCT_SLUGS });
+    const client = await getClient();
+    const { data } = await client.query({ query: GET_ALL_PRODUCT_SLUGS });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return ((data as any)?.products?.nodes ?? []).map((p: { slug: string }) => ({
       slug: p.slug,
@@ -27,7 +28,8 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   try {
-    const { data } = await getClient().query({
+    const client = await getClient();
+    const { data } = await client.query({
       query: GET_PRODUCT_BY_SLUG,
       variables: { slug },
     });
@@ -51,7 +53,8 @@ export default async function ProductPage({ params }: PageProps) {
 
   let product: Record<string, unknown> | null = null;
   try {
-    const { data } = await getClient().query({
+    const client = await getClient();
+    const { data } = await client.query({
       query: GET_PRODUCT_BY_SLUG,
       variables: { slug },
     });

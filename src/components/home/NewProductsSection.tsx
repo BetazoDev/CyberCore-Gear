@@ -7,9 +7,10 @@ export default async function NewProductsSection() {
   let categories: unknown[] = [];
 
   try {
+    const client = await getClient();
     const [productsRes, catsRes] = await Promise.all([
-      getClient().query({ query: GET_PRODUCTS, variables: { first: 12 } }),
-      getClient().query({ query: GET_CATEGORIES }),
+      client.query({ query: GET_PRODUCTS, variables: { first: 12 } }),
+      client.query({ query: GET_CATEGORIES }),
     ]);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     products = (productsRes.data as any)?.products?.nodes ?? [];

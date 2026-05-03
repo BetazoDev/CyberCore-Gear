@@ -24,7 +24,8 @@ export default async function FeaturedCategories() {
   let categories: Category[] = [];
 
   try {
-    const { data } = await getClient().query({ query: GET_CATEGORIES });
+    const client = await getClient();
+    const { data } = await client.query({ query: GET_CATEGORIES });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     categories = (data as any)?.productCategories?.nodes?.slice(0, 4) ?? [];
   } catch (e) {

@@ -17,7 +17,8 @@ export default async function PromoBanner() {
   // Fetch 2 featured products for the split promo (like Fynode's two-column promo cards)
   let products: Product[] = [];
   try {
-    const { data } = await getClient().query({
+    const client = await getClient();
+    const { data } = await client.query({
       query: GET_PRODUCTS,
       variables: { first: 2 },
     });

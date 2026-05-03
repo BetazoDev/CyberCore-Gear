@@ -21,7 +21,8 @@ export default async function RelatedProducts({ currentSlug }: { currentSlug: st
   let products: Product[] = [];
 
   try {
-    const { data } = await getClient().query({
+    const client = await getClient();
+    const { data } = await client.query({
       query: GET_PRODUCTS,
       variables: { first: 4 },
     });

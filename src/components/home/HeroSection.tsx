@@ -21,7 +21,8 @@ export default async function HeroSection() {
   let slides: HeroSlide[] = [];
 
   try {
-    const { data } = await getClient().query({ query: GET_HOMEPAGE_DATA });
+    const client = await getClient();
+    const { data } = await client.query({ query: GET_HOMEPAGE_DATA });
     const acf = (data as any)?.nodeByUri?.configuracionInicio;
     const themeOptions = (data as any)?.themeOptions;
 
